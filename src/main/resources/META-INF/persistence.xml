@@ -10,7 +10,7 @@
         
         <properties>
             <!-- Production'da create-or-extend yapılmaz, DDL ile manuel eklendiği için none. -->
-            <property name="eclipselink.ddl-generation" value="create-or-extend" />
+            <property name="eclipselink.ddl-generation" value="none" />
             <property name="eclipselink.logging.level" value="INFO" />
             <property name="eclipselink.weaving" value="static" />
         </properties>
