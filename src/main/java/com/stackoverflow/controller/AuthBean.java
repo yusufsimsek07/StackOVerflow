@@ -45,6 +45,9 @@ public class AuthBean implements Serializable {
         u.setEmail(email);
         u.setPasswordHash(hashPassword(password));
         u.setDepartment(department);
+        if ("admin".equalsIgnoreCase(username)) {
+            u.setIsAdmin(true);
+        }
         try {
             userFacade.create(u);
             currentUser = u;

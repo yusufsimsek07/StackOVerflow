@@ -21,6 +21,9 @@
                             <div class="col-md-2 text-center border-end">
                                 <img src="#{request.contextPath}/image?userId=#{q.user.id}" class="rounded-circle mb-2 avatar" width="60" height="60" />
                                 <div class="fw-bold text-truncate" style="font-size:0.8rem;">#{q.user.username}</div>
+                                <h:panelGroup rendered="#{q.user.isAdmin}">
+                                    <span class="badge bg-dark mt-1" style="font-size:0.6rem; color: #f1c40f;">🛡️ YÖNETİCİ</span>
+                                </h:panelGroup>
                                 <h:panelGroup rendered="#{q.user.department != null}">
                                     <span class="badge #{q.user.department.badgeClass} mt-1" style="font-size:0.6rem;">#{q.user.department.label}</span>
                                 </h:panelGroup>

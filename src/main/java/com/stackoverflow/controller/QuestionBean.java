@@ -89,7 +89,8 @@ public class QuestionBean implements Serializable {
 
     public boolean isCanEdit() {
         if (!authBean.isLoggedIn() || question == null || question.getUser() == null) return false;
-        return authBean.getCurrentUser().getId().equals(question.getUser().getId());
+        com.stackoverflow.entity.User currentUser = authBean.getCurrentUser();
+        return currentUser.getIsAdmin() || currentUser.getId().equals(question.getUser().getId());
     }
 
     public String deleteQuestion() {

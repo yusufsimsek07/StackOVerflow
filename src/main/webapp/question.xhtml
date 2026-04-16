@@ -33,6 +33,9 @@
                 <div class="col-md-11">
                     <p style="white-space: pre-wrap; font-size: 1.1rem;">#{questionBean.question.content}</p>
                     <div class="d-flex justify-content-end align-items-center mt-3">
+                        <h:panelGroup rendered="#{questionBean.question.user.isAdmin}">
+                            <span class="badge bg-dark mt-1 me-2" style="font-size:0.6rem; color: #f1c40f;">🛡️ YÖNETİCİ</span>
+                        </h:panelGroup>
                         <h:panelGroup rendered="#{questionBean.question.user.department != null}">
                             <span class="badge #{questionBean.question.user.department.badgeClass} me-2">#{questionBean.question.user.department.label}</span>
                         </h:panelGroup>
@@ -54,6 +57,9 @@
                     <div class="col-md-11">
                         <p style="white-space: pre-wrap;">#{ans.content}</p>
                         <div class="d-flex justify-content-end align-items-center mt-2">
+                            <h:panelGroup rendered="#{ans.user.isAdmin}">
+                                <span class="badge bg-dark mt-1 me-2" style="font-size:0.6rem; color: #f1c40f;">🛡️ YÖNETİCİ</span>
+                            </h:panelGroup>
                             <h:panelGroup rendered="#{ans.user.department != null}">
                                 <span class="badge #{ans.user.department.badgeClass} me-2" style="font-size:0.7rem;">#{ans.user.department.label}</span>
                             </h:panelGroup>

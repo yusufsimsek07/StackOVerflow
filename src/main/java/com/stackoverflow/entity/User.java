@@ -31,6 +31,9 @@ public class User implements Serializable {
     @Column(name = "department", length = 50)
     private Department department;
 
+    @Column(name = "is_admin", columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private Boolean isAdmin = false;
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getUsername() { return username; }
@@ -45,4 +48,6 @@ public class User implements Serializable {
     public void setProfilePicture(byte[] profilePicture) { this.profilePicture = profilePicture; }
     public Department getDepartment() { return department; }
     public void setDepartment(Department department) { this.department = department; }
+    public Boolean getIsAdmin() { return isAdmin != null ? isAdmin : false; }
+    public void setIsAdmin(Boolean isAdmin) { this.isAdmin = isAdmin; }
 }
