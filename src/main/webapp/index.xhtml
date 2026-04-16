@@ -1,0 +1,57 @@
+<ui:composition template="/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets">
+
+    <ui:define name="content">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold m-0" style="color: #2F3337;">#{homeBean.pageTitle}</h2>
+            <h:link outcome="ask" class="btn btn-custom rounded-pill px-4" rendered="#{authBean.loggedIn}">Soru Sor</h:link>
+        </div>
+        
+        <div class="list-group">
+            <h:outputText value="Bu departmanda henüz soru bulunmuyor." rendered="#{empty homeBean.questions}" class="text-muted fst-italic" />
+            
+            <ui:repeat value="#{homeBean.questions}" var="q">
+                <div class="card hover-card mb-3 border border-1 border-light shadow-sm">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <!-- Left: Author Info -->
+                            <div class="col-md-2 text-center border-end">
+                                <img src="#{request.contextPath}/image?userId=#{q.user.id}" class="rounded-circle mb-2 avatar" width="60" height="60" />
+                                <div class="fw-bold text-truncate" style="font-size:0.8rem;">#{q.user.username}</div>
+                                <h:panelGroup rendered="#{q.user.department != null}">
+                                    <span class="badge #{q.user.department.badgeClass} mt-1" style="font-size:0.6rem;">#{q.user.department.label}</span>
+                                </h:panelGroup>
+                            </div>
+                            
+                            <!-- Middle: Question Content -->
+                            <div class="col-md-8 px-4">
+                                <h:panelGroup rendered="#{q.department != null}">
+                                    <span class="badge #{q.department.badgeClass} mb-2 me-1" style="font-size:0.75rem;">#{q.department.label}</span>
+                                    <span class="text-muted" style="font-size:0.75rem;">alanında soruldu</span>
+                                </h:panelGroup>
+                                <h5 class="mb-2 mt-1">
+                                    <h:link outcome="question" value="#{q.title}" class="text-decoration-none so-orange fw-bold">
+                                        <f:param name="id" value="#{q.id}" />
+                                    </h:link>
+                                </h5>
+                                <p class="text-muted mb-1" style="font-size:0.9rem;">
+                                    #{q.content.length() gt 120 ? q.content.substring(0, 120).concat('...') : q.content}
+                                </p>
+                            </div>
+                            
+                            <!-- Right: Stats -->
+                            <div class="col-md-2 text-end text-muted" style="font-size:0.85rem;">
+                                <div class="mb-1"><span class="fw-bold fs-5 text-dark">#{q.score}</span> oy</div>
+                                <div class="mb-1"><span class="fw-bold fs-5 #{q.answers.size() > 0 ? 'text-success' : 'text-dark'}">#{q.answers.size()}</span> cevap</div>
+                                <div>#{empty q.viewCount ? 0 : q.viewCount} okunma</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ui:repeat>
+        </div>
+    </ui:define>
+</ui:composition>

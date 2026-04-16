@@ -1,0 +1,80 @@
+<ui:composition template="/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets">
+                
+    <f:metadata>
+        <f:viewParam name="id" value="#{questionBean.questionId}" />
+        <f:viewAction action="#{questionBean.loadQuestion}" />
+    </f:metadata>
+
+    <ui:define name="content">
+        <h:panelGroup rendered="#{questionBean.question != null}">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2 class="m-0">#{questionBean.question.title}</h2>
+                <h:form rendered="#{questionBean.canEdit}">
+                    <h:commandLink action="#{questionBean.deleteQuestion}"
+                                   onclick="return confirm('Bu soruyu silmek istediğinize emin misiniz? Tüm oylar ve cevaplar geri dönülemez şekilde silinecektir.');"
+                                   class="btn btn-outline-danger btn-sm fw-bold">
+                        🗑️ Soruyu Sil
+                    </h:commandLink>
+                </h:form>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col-md-1 text-center">
+                    <h:form>
+                        <h:commandButton action="#{questionBean.upvoteQuestion}" value="▲" class="btn btn-outline-secondary btn-sm mb-1 d-block w-100" />
+                        <h3 class="my-2">#{questionBean.question.score}</h3>
+                        <h:commandButton action="#{questionBean.downvoteQuestion}" value="▼" class="btn btn-outline-secondary btn-sm d-block w-100" />
+                    </h:form>
+                </div>
+                <div class="col-md-11">
+                    <p style="white-space: pre-wrap; font-size: 1.1rem;">#{questionBean.question.content}</p>
+                    <div class="d-flex justify-content-end align-items-center mt-3">
+                        <h:panelGroup rendered="#{questionBean.question.user.department != null}">
+                            <span class="badge #{questionBean.question.user.department.badgeClass} me-2">#{questionBean.question.user.department.label}</span>
+                        </h:panelGroup>
+                        <small class="text-muted fw-bold">#{questionBean.question.user.username}</small>
+                        <img src="#{request.contextPath}/image?userId=#{questionBean.question.user.id}" class="rounded-circle ms-2 avatar" width="30" height="30" />
+                    </div>
+                </div>
+            </div>
+            
+            <h4 class="mt-5">Cevaplar (#{questionBean.question.answers.size()})</h4>
+            <hr/>
+            <ui:repeat value="#{questionBean.question.answers}" var="ans">
+                <div class="row mb-3 pb-3 border-bottom">
+                    <div class="col-md-1 text-center">
+                        <h:panelGroup rendered="#{ans.isAccepted}">
+                            <span class="badge bg-success mb-2">Kabul Edildi</span>
+                        </h:panelGroup>
+                    </div>
+                    <div class="col-md-11">
+                        <p style="white-space: pre-wrap;">#{ans.content}</p>
+                        <div class="d-flex justify-content-end align-items-center mt-2">
+                            <h:panelGroup rendered="#{ans.user.department != null}">
+                                <span class="badge #{ans.user.department.badgeClass} me-2" style="font-size:0.7rem;">#{ans.user.department.label}</span>
+                            </h:panelGroup>
+                            <small class="text-muted fw-bold">#{ans.user.username}</small>
+                            <img src="#{request.contextPath}/image?userId=#{ans.user.id}" class="rounded-circle ms-2 avatar" width="24" height="24" />
+                        </div>
+                    </div>
+                </div>
+            </ui:repeat>
+            
+            <h4 class="mt-4">Cevap Yaz</h4>
+            <h:form>
+                <div class="mb-3">
+                    <h:inputTextarea value="#{questionBean.newAnswerContent}" class="form-control" rows="5" required="true" />
+                </div>
+                <h:commandButton action="#{questionBean.submitAnswer}" value="Cevabı Gönder" class="btn btn-primary" />
+            </h:form>
+        </h:panelGroup>
+        
+        <h:panelGroup rendered="#{questionBean.question == null}">
+            <div class="alert alert-warning">Soru bulunamadı.</div>
+        </h:panelGroup>
+    </ui:define>
+</ui:composition>

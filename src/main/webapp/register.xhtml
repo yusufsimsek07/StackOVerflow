@@ -1,0 +1,50 @@
+<ui:composition template="/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets">
+
+    <ui:define name="content">
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-7">
+                <div class="card hover-card p-4 border-top border-4" style="border-top-color:#f48024 !important;">
+                    <div class="card-body">
+                        <h3 class="card-title text-center mb-4 fw-bold">Topluluğa <span class="so-orange">Katıl</span></h3>
+                        <h:messages globalOnly="true" class="alert alert-danger" />
+                        
+                        <h:form>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Kullanıcı Adı</label>
+                                    <h:inputText value="#{authBean.username}" class="form-control bg-light border-0" required="true" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">E-posta</label>
+                                    <h:inputText value="#{authBean.email}" class="form-control bg-light border-0" required="true" />
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Şifre</label>
+                                <h:inputSecret value="#{authBean.password}" class="form-control bg-light border-0" required="true" />
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold">Departmanınız <span class="text-muted fw-normal">(İsteğe Bağlı)</span></label>
+                                <h:selectOneMenu value="#{authBean.department}" class="form-select bg-light border-0 fw-semibold text-secondary">
+                                    <f:selectItem itemLabel="-- Belirtmek İstemiyorum --" itemValue="#{null}" />
+                                    <f:selectItems value="#{authBean.availableDepartments}" var="dept" itemValue="#{dept}" itemLabel="#{dept.label}" />
+                                </h:selectOneMenu>
+                            </div>
+                            
+                            <h:commandButton value="Kayıt Ol ve Topluluğa Katıl" action="#{authBean.register}" class="btn btn-custom btn-lg w-100 rounded-pill mb-4 shadow" />
+                            
+                            <div class="text-center text-muted">
+                                Zaten üye misiniz? <br/>
+                                <h:link outcome="login" class="text-decoration-none so-orange fw-bold fs-5">Giriş Yapın</h:link>
+                            </div>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>
