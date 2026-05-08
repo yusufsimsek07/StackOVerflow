@@ -33,7 +33,13 @@ PostgreSQL üzerinde aşağıdaki komutlarla ana veritabanını oluşturun:
 ```sql
 CREATE DATABASE stackoverflow_db;
 ```
-*Gerekli tüm tablolar (users, questions, answers, vb.) JPA / EclipseLink tarafından otomatik olarak (schema-generation) haritalanmıştır ancak bazı `ALTER` sorguları ve sütun eklemeleri uygulamanın güncel sürümünde manuel olarak yedeklenmiştir.*
+
+**Eğer projeyi ilk defa kuruyorsanız (Özellikle Windows Kullanıcıları İçin):**
+Proje dizininde yer alan `database_backup.sql` dosyası, uygulamanın çalışması için gerekli olan tüm tablo yapılarını ve örnek verileri barındırır. Veritabanını oluşturduktan sonra bu yedeği içeri aktarmalısınız:
+*   **pgAdmin üzerinden:** `stackoverflow_db` veritabanına sağ tıklayıp **Restore** (Geri Yükle) seçeneğini tıklayın ve `database_backup.sql` dosyasını seçerek yükleyin.
+*   **Terminal/CMD üzerinden:** `psql -U postgres -d stackoverflow_db -f database_backup.sql` komutunu çalıştırın.
+
+*(Not: Projede JPA tabloları otomatik oluşturma özelliği kapalıdır (`ddl-generation=none`), bu nedenle sistemi çalıştırmadan önce `.sql` dosyasını içeri aktarmanız şarttır).*
 
 ### 2. GlassFish 7 Yapılandırması
 1. **asadmin** konsolunu kullanarak PostgreSQL JDBC sürücünüzü (`postgresql.jar`) `glassfish/domains/domain1/lib` dizinine ekleyin.
@@ -43,8 +49,9 @@ CREATE DATABASE stackoverflow_db;
 Proje kök dizininde iken Maven komutu ile `.war` paketi oluşturun ve GlassFish'e aktarın:
 ```bash
 mvn clean package
-cp target/stackoverflow-clone-1.0-SNAPSHOT.war glassfish7/glassfish/domains/domain1/autodeploy/
 ```
+*   **Mac/Linux:** `cp target/stackoverflow-clone-1.0-SNAPSHOT.war glassfish7/glassfish/domains/domain1/autodeploy/`
+*   **Windows:** `target` klasörü içinde oluşan `.war` dosyasını kopyalayın ve `glassfish7\glassfish\domains\domain1\autodeploy\` klasörüne elle yapıştırın. (Ya da komut satırında `copy` komutunu kullanabilirsiniz).
 
 ### 4. Çalıştırma
 Aşağıdaki URL üzerinden sistemi test edebilir, yeni bir kullanıcı kaydı (Departman seçerek) oluşturabilirsiniz:
